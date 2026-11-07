@@ -46,6 +46,3 @@ La entrega inicial se identifica con `estado-inicial` y el análisis con `etapa-
 
 Se utilizó ChatGPT (OpenAI) como herramienta de apoyo para la revisión y corroboración del código, consulta de criterios de calidad de software y diseño gráfico de presentación en PowerPoint.
 
-## Estado académico
-
-Esta es la **etapa inicial**, no la entrega final del grupo. Restan aplicar los refactorings, volver a probar, efectuar code review, completar el informe PDF único, integrar los dos segmentos de video y cargar los cuatro recursos exigidos por la cátedra.
