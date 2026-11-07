@@ -1,0 +1,34 @@
+Verificacion de la version refactorizada
+Fecha: 2026-11-07
+Entorno: openjdk version "21.0.12.1" 2026-08-18
+Comando: bash scripts/verificar_regresion.sh
+
+[OK] CP-01 Registrar válida
+[OK] CP-02 Rechazar código duplicado
+[OK] CP-03 Rechazar estudiante inexistente
+[OK] CP-04 Rechazar fecha inválida
+[OK] CP-05 Rechazar tipo inválido
+[OK] CP-06 Listar tres registros
+[OK] CP-07 Listar vacío
+[OK] CP-08 Consultar existente
+[OK] CP-09 Consultar inexistente
+[OK] CP-10 Consultar código vacío
+[OK] CP-11 Cambiar estado
+[OK] CP-12 Rechazar estado inválido
+[OK] CP-13 No mutar estado ante error
+[OK] CP-14 Asignar responsable
+[OK] CP-15 Responsable inexistente
+[OK] CP-16 Asignación no muta al fallar
+[OK] CP-17 Filtrar prioridad ALTA
+[OK] CP-18 Filtrar combinación de 3 criterios
+[OK] CP-19 Filtro sin coincidencias
+[OK] CP-20 Filtro inválido
+[OK] CP-21 Reporte inicial consistente
+[OK] CP-22 Reporte luego de cambio estado
+[OK] CP-23 Reporte sin solicitudes
+[OK] CP-24 Proteger registro de responsable inválido
+[OK] CP-25 No permitir mutar la colección expuesta
+[OK] CP-26 Reporte con estados y prioridades mezclados
+[OK] CP-27 Gestor usa el repositorio inyectado
+TOTAL: 27 aprobadas, 0 fallidas
+DEMO IGUAL A LA VERSION INICIAL

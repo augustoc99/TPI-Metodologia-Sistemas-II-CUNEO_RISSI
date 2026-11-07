@@ -1,0 +1,14 @@
+=== DEMO DETERMINISTA / VERSIÓN INICIAL ===
+Registrar S004: S004
+Consultar S004: PENDIENTE
+Asignar S004: R01
+Cambiar estado S004: EN_PROCESO
+Filtro prioridad ALTA: 2
+REPORTE DE SOLICITUDES
+Total: 4
+Pendientes: 3
+En proceso: 1
+Resueltas: 0
+Prioridad alta: 2
+Listar: 4 registros
+=== FIN DEMO ===

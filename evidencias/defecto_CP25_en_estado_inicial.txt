@@ -1,0 +1,6 @@
+Prueba equivalente a CP-25 ejecutada sobre el codigo de estado-inicial
+Comando: git archive estado-inicial src, compilar y ejecutar Prueba
+
+Solicitudes antes: 3
+Solicitudes despues de getSolicitudes().clear(): 0
+Resultado CP-25 en estado-inicial: FALLA (la coleccion interna se pudo vaciar sin pasar por el gestor)

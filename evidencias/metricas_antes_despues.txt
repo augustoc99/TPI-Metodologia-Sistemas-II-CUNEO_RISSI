@@ -1,0 +1,15 @@
+Version: estado-inicial
+  Archivos fuente en src: 9
+  Lineas totales en src: 379
+  Lineas de GestorSolicitudes: 231
+  Metodo mas largo: GestorSolicitudes.registrarSolicitud con 68 lineas
+  GestorSolicitudes.registrarSolicitud: 68 lineas, 8 parametros
+
+Version: version actual
+  Archivos fuente en src: 17
+  Lineas totales en src: 580
+  Lineas de GestorSolicitudes: 130
+  Metodo mas largo: ConsolaSolicitudes.procesar con 18 lineas
+  GestorSolicitudes.registrarSolicitud: 14 lineas, 1 parametros
+
+Medicion simple por conteo de lineas y llaves sobre src/*.java; no es una herramienta de analisis estatico.

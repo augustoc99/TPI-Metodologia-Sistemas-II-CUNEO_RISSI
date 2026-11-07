@@ -1,0 +1,185 @@
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: LISTADO DE SOLICITUDES
+Código=S001 | Estudiante=Ana Ficticia (E001) | Correo=ana@example.invalid | Tipo=CERTIFICADO | Prioridad=MEDIA | Estado=PENDIENTE | Responsable=Mesa Académica | Fecha=2026-11-01 | Descripción=Constancia regular | Observación=
+Código=S002 | Estudiante=Bruno Ejemplo (E002) | Correo=bruno@example.invalid | Tipo=EQUIVALENCIA | Prioridad=ALTA | Estado=PENDIENTE | Responsable=SIN_ASIGNAR | Fecha=2026-11-02 | Descripción=Reconocer materia | Observación=Revisión documental
+Código=S003 | Estudiante=Ana Ficticia (E001) | Correo=ana@example.invalid | Tipo=INSCRIPCION | Prioridad=BAJA | Estado=PENDIENTE | Responsable=Coordinación | Fecha=2026-11-03 | Descripción=Alta cursada | Observación=
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Código=S001 | Estudiante=Ana Ficticia (E001) | Correo=ana@example.invalid | Tipo=CERTIFICADO | Prioridad=MEDIA | Estado=PENDIENTE | Responsable=Mesa Académica | Fecha=2026-11-01 | Descripción=Constancia regular | Observación=
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: ERROR: Solicitud inexistente: S999
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: ERROR: Código obligatorio
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): Registrada: S004
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Código duplicado: S001
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Código obligatorio
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Legajo obligatorio
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Estudiante inexistente: E999
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Descripción obligatoria
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Tipo obligatorio
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Tipo inválido: OTRO
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Prioridad obligatoria
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Prioridad inválida: URGENTE
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Fecha inválida (AAAA-MM-DD)
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Fecha inválida (AAAA-MM-DD)
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): ERROR: Responsable inexistente: R99
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Legajo E001/E002: Descripción: Tipo CERTIFICADO/EQUIVALENCIA/INSCRIPCION: Prioridad BAJA/MEDIA/ALTA: Fecha AAAA-MM-DD: Responsable R01/R02 (opcional): Observación (opcional): Registrada: S006
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: LISTADO DE SOLICITUDES
+Código=S001 | Estudiante=Ana Ficticia (E001) | Correo=ana@example.invalid | Tipo=CERTIFICADO | Prioridad=MEDIA | Estado=PENDIENTE | Responsable=Mesa Académica | Fecha=2026-11-01 | Descripción=Constancia regular | Observación=
+Código=S002 | Estudiante=Bruno Ejemplo (E002) | Correo=bruno@example.invalid | Tipo=EQUIVALENCIA | Prioridad=ALTA | Estado=PENDIENTE | Responsable=SIN_ASIGNAR | Fecha=2026-11-02 | Descripción=Reconocer materia | Observación=Revisión documental
+Código=S003 | Estudiante=Ana Ficticia (E001) | Correo=ana@example.invalid | Tipo=INSCRIPCION | Prioridad=BAJA | Estado=PENDIENTE | Responsable=Coordinación | Fecha=2026-11-03 | Descripción=Alta cursada | Observación=
+Código=S004 | Estudiante=Ana Ficticia (E001) | Correo=ana@example.invalid | Tipo=CERTIFICADO | Prioridad=ALTA | Estado=PENDIENTE | Responsable=Mesa Académica | Fecha=2026-11-05 | Descripción=Constancia de examen | Observación=Prioridad urgente
+Código=S006 | Estudiante=Bruno Ejemplo (E002) | Correo=bruno@example.invalid | Tipo=EQUIVALENCIA | Prioridad=MEDIA | Estado=PENDIENTE | Responsable=Coordinación | Fecha=2026-11-06 | Descripción=Reconocimiento de materia | Observación=Con programa analitico
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Nuevo estado: Estado actualizado: EN_PROCESO
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Nuevo estado: Estado actualizado: RESUELTA
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Nuevo estado: ERROR: Estado inválido: PAUSADA
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Nuevo estado: ERROR: Estado obligatorio
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Nuevo estado: ERROR: Solicitud inexistente: S999
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Nuevo estado: ERROR: Código obligatorio
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Responsable R01/R02: Responsable asignado: Coordinación
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Responsable R01/R02: Responsable asignado: Mesa Académica
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Responsable R01/R02: ERROR: Responsable inexistente: R99
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Responsable R01/R02: ERROR: Responsable obligatorio
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Responsable R01/R02: ERROR: Solicitud inexistente: S999
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Código: Responsable R01/R02: ERROR: Código obligatorio
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Tipo (opcional): Prioridad (opcional): Estado (opcional): Coincidencias: 1
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Tipo (opcional): Prioridad (opcional): Estado (opcional): Coincidencias: 1
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Tipo (opcional): Prioridad (opcional): Estado (opcional): Coincidencias: 2
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Tipo (opcional): Prioridad (opcional): Estado (opcional): Coincidencias: 1
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Tipo (opcional): Prioridad (opcional): Estado (opcional): ERROR: Tipo inválido: OTRO
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Tipo (opcional): Prioridad (opcional): Estado (opcional): ERROR: Prioridad inválida: XX
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Tipo (opcional): Prioridad (opcional): Estado (opcional): ERROR: Estado inválido: ZZ
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Tipo (opcional): Prioridad (opcional): Estado (opcional): Coincidencias: 5
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: REPORTE DE SOLICITUDES
+Total: 5
+Pendientes: 3
+En proceso: 1
+Resueltas: 1
+Prioridad alta: 2
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Opción inválida
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Opción inválida
+
+GESTIÓN DE SOLICITUDES ACADÉMICAS
+1 Registrar | 2 Listar | 3 Consultar | 4 Estado | 5 Asignar | 6 Filtrar | 7 Reporte | 0 Salir
+Opción: Hasta luego
