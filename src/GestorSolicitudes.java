@@ -1,7 +1,6 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class GestorSolicitudes {
@@ -14,11 +13,17 @@ public class GestorSolicitudes {
 
     private final List<Estudiante> estudiantes;
     private final List<Responsable> responsables;
-    private final List<Solicitud> solicitudes = new ArrayList<>();
+    private final RepositorioSolicitudes repositorio;
 
     public GestorSolicitudes(List<Estudiante> estudiantes, List<Responsable> responsables) {
+        this(estudiantes, responsables, new RepositorioSolicitudesEnMemoria());
+    }
+
+    public GestorSolicitudes(List<Estudiante> estudiantes, List<Responsable> responsables,
+                             RepositorioSolicitudes repositorio) {
         this.estudiantes = estudiantes;
         this.responsables = responsables;
+        this.repositorio = repositorio;
     }
 
     public Solicitud registrarSolicitud(DatosRegistroSolicitud datos) {
@@ -31,18 +36,14 @@ public class GestorSolicitudes {
         Responsable responsable = buscarResponsableOpcional(datos.responsableId());
         Solicitud nueva = new Solicitud(datos.codigo().trim(), estudiante, datos.descripcion().trim(),
                 tipo, prioridad, fecha, normalizarObservacion(datos.observacion()), responsable);
-        solicitudes.add(nueva);
+        repositorio.agregar(nueva);
         return nueva;
     }
 
     public Solicitud consultar(String codigo) {
         exigirTexto(codigo, Mensajes.CODIGO_OBLIGATORIO);
-        for (Solicitud s : solicitudes) {
-            if (s.getCodigo().equalsIgnoreCase(codigo.trim())) {
-                return s;
-            }
-        }
-        throw new IllegalArgumentException(Mensajes.SOLICITUD_INEXISTENTE + codigo);
+        return repositorio.buscarPorCodigo(codigo)
+                .orElseThrow(() -> new IllegalArgumentException(Mensajes.SOLICITUD_INEXISTENTE + codigo));
     }
 
     public Solicitud cambiarEstado(String codigo, String estadoTexto) {
@@ -63,7 +64,7 @@ public class GestorSolicitudes {
         Prioridad prioridad = PRIORIDADES.opcional(prioridadTexto);
         Estado estado = ESTADOS.opcional(estadoTexto);
         List<Solicitud> resultado = new ArrayList<>();
-        for (Solicitud solicitud : solicitudes) {
+        for (Solicitud solicitud : repositorio.todas()) {
             if ((tipo == null || solicitud.getTipo() == tipo)
                     && (prioridad == null || solicitud.getPrioridad() == prioridad)
                     && (estado == null || solicitud.getEstado() == estado)) {
@@ -74,15 +75,13 @@ public class GestorSolicitudes {
     }
 
     public List<Solicitud> getSolicitudes() {
-        return Collections.unmodifiableList(solicitudes);
+        return repositorio.todas();
     }
 
     private void validarCodigoNuevo(String codigo) {
         exigirTexto(codigo, Mensajes.CODIGO_OBLIGATORIO);
-        for (Solicitud s : solicitudes) {
-            if (s.getCodigo().equalsIgnoreCase(codigo.trim())) {
-                throw new IllegalArgumentException(Mensajes.CODIGO_DUPLICADO + codigo.trim());
-            }
+        if (repositorio.buscarPorCodigo(codigo).isPresent()) {
+            throw new IllegalArgumentException(Mensajes.CODIGO_DUPLICADO + codigo.trim());
         }
     }
 

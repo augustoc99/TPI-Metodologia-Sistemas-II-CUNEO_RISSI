@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PruebasBase {
     private static int aprobadas = 0;
@@ -72,6 +74,18 @@ public class PruebasBase {
             check(r.contains("Total: 3") && r.contains("Pendientes: 1") && r.contains("En proceso: 1")
                     && r.contains("Resueltas: 1") && r.contains("Prioridad alta: 1"), "conteos err\u00f3neos: " + r);
         });
+        caso("CP-27", "Gestor usa el repositorio inyectado", () -> {
+            RepositorioEspia espia = new RepositorioEspia();
+            GestorSolicitudes g = new GestorSolicitudes(
+                    List.of(new Estudiante("E001", "Ana Ficticia", "ana@example.invalid")), List.of(), espia);
+            error(() -> g.registrarSolicitud(altaValida("S100").fecha("no").construir()), "Fecha");
+            eq(0, espia.agregadas);
+            eq("S100", g.registrarSolicitud(altaValida("S100").construir()).getCodigo());
+            eq(1, espia.agregadas);
+            eq("S100", g.consultar("s100").getCodigo());
+            error(() -> g.registrarSolicitud(altaValida("S100").construir()), "C\u00f3digo duplicado");
+            eq(1, g.getSolicitudes().size());
+        });
         System.out.printf("TOTAL: %d aprobadas, %d fallidas%n", aprobadas, fallidas);
         if (fallidas != 0) System.exit(1);
     }
@@ -79,6 +93,15 @@ public class PruebasBase {
         return DatosRegistroSolicitud.conCodigo(codigo).legajo("E001").descripcion("Solicitud")
                 .tipo("CERTIFICADO").prioridad("MEDIA").fecha("2026-11-04")
                 .responsableId("").observacion("");
+    }
+    private static final class RepositorioEspia implements RepositorioSolicitudes {
+        private final List<Solicitud> guardadas = new ArrayList<>();
+        private int agregadas = 0;
+        public void agregar(Solicitud solicitud) { agregadas++; guardadas.add(solicitud); }
+        public Optional<Solicitud> buscarPorCodigo(String codigo) {
+            return guardadas.stream().filter(s -> s.getCodigo().equalsIgnoreCase(codigo.trim())).findFirst();
+        }
+        public List<Solicitud> todas() { return List.copyOf(guardadas); }
     }
     private static String reporte(GestorSolicitudes gestor) {
         return new ReporteSolicitudes().generar(gestor.getSolicitudes());
