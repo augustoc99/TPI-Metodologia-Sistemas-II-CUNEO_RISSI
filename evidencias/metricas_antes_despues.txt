@@ -7,8 +7,8 @@ Version: estado-inicial
 
 Version: version actual
   Archivos fuente en src: 17
-  Lineas totales en src: 580
-  Lineas de GestorSolicitudes: 130
+  Lineas totales en src: 581
+  Lineas de GestorSolicitudes: 131
   Metodo mas largo: ConsolaSolicitudes.procesar con 18 lineas
   GestorSolicitudes.registrarSolicitud: 14 lineas, 1 parametros
 

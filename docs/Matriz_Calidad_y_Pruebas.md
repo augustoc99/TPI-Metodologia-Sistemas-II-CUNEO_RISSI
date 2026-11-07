@@ -57,3 +57,15 @@ La suite no somete a carga elevada, no valida persistencia real, seguridad de da
 3. Si la API pública cambia por `Introduce Parameter Object` o encapsulamiento, preservar mediante adaptador temporal la batería base o migrar pruebas documentando la equivalencia del comportamiento observable.
 4. Repetir errores y bordes de CP-01 a CP-24; añadir pruebas específicas para invariantes, inyección de dependencias y nuevo objeto parámetro.
 5. No considerar «seguro» un refactoring exclusivamente por compilar: también revisar salida y reglas del dominio.
+
+## Resultados posteriores al refactoring (etapa 2)
+
+Version evaluada: commit `9bce3a3`. Resultado real: 27 aprobadas, 0 fallidas (`evidencias/pruebas_refactorizado.txt`). Los casos CP-01 a CP-24 conservan identificador, nombre y aserciones; solo cambio la forma de llamar al sistema (ver `docs/Decisiones_Tecnicas.md`).
+
+| Caso | Operacion / entrada representativa | Resultado esperado | Resultado observado |
+|---|---|---|---|
+| CP-25 | Intentar `clear()` y `add()` sobre `getSolicitudes()` | `UnsupportedOperationException` y total 3. En `estado-inicial` la lista quedaba vacia | OK |
+| CP-26 | Reporte tras resolver S001 y poner S002 en proceso | Total 3, pendientes 1, en proceso 1, resueltas 1, altas 1 | OK |
+| CP-27 | Gestor con repositorio inyectado: alta invalida, alta valida, duplicado | El repositorio no recibe el alta invalida, recibe una valida y el duplicado se rechaza | OK |
+
+Comparacion de caja negra (`scripts/comparar_con_inicial.sh`): misma entrada (`tests/entrada_comparacion.txt`) sobre `estado-inicial` y la version actual, 185 lineas de salida sin diferencias, con 25 errores controlados. La comparacion detecta cambios: alterando un texto del reporte el diff lo mostro.

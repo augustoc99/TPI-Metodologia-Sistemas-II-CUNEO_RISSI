@@ -1,42 +1,62 @@
-# Code review profesional: checklist y acta pendiente
+# Code review profesional: checklist y acta
 
-## Alcance y regla de uso
+## Alcance
 
-**Versión evaluada actualmente:** `estado-inicial`, para diagnóstico únicamente. La revisión profesional **de la versión refactorizada** corresponde al Camila Rissi y se ejecutará cuando existan cambios. No marcar sin evidencia. Para cada ítem registrar: estado (`OK / OBSERVACIÓN / NO APLICA`), archivo/línea, severidad, recomendación, responsable de corrección y commit de cierre.
+Version evaluada: codigo en el commit `9bce3a3` (rama `main`), comparado con el tag `estado-inicial`. Fecha de la revision: 2026-11-07. Criterios: 18 puntos RV-01 a RV-18 (definidos en la etapa 1). Estados: `OK`, `OBSERVACION`, `NO APLICA`.
 
-| ID | Criterio de revisión | Línea base | Estado de revisión final |
-|---|---|---|---|
-| RV-01 | Los nombres de métodos, variables y clases expresan el dominio | `x` en filtro (170), nombres mixtos mejorables | PENDIENTE |
-| RV-02 | Cada método tiene propósito único y longitud razonable | CS-01, 18–85 | PENDIENTE |
-| RV-03 | No hay lógica de búsqueda/parsing duplicada | CS-03, CS-08 | PENDIENTE |
-| RV-04 | Responsabilidades distribuidas con cohesión | CS-04, CS-05 | PENDIENTE |
-| RV-05 | No se exponen colecciones mutables | CS-06 | PENDIENTE |
-| RV-06 | Se manejan nulos y datos inválidos con mensajes previsibles | CP-02 a CP-05, CP-24 | PENDIENTE |
-| RV-07 | No existen comparaciones frágiles entre enums y strings | CS-07 | PENDIENTE |
-| RV-08 | Lógica de dominio independiente de presentación, si es viable | CS-05 | PENDIENTE |
-| RV-09 | Contratos y responsabilidades de los objetos claros | CS-02 / F2 | PENDIENTE |
-| RV-10 | Las nuevas abstracciones tienen utilidad (sin sobreingeniería) | DIP propuesto condicionado | PENDIENTE |
-| RV-11 | Se conservan las seis operaciones funcionales | 24 CP + demo | PENDIENTE |
-| RV-12 | Pruebas de bordes y errores ejecutadas tras cada cambio | Logs previos disponibles | PENDIENTE |
-| RV-13 | Snapshot de demostración sin cambios inesperados | `expected_demo.txt` | PENDIENTE |
-| RV-14 | No se inventan resultados de herramientas ni benchmarks | Sin benchmark efectuado | PENDIENTE |
-| RV-15 | Cada refactoring enlaza antes → commit → pruebas | Plan F1–F6 | PENDIENTE |
-| RV-16 | Commits y tags Git representan hitos reales | Solo tags iniciales en etapa 1 | PENDIENTE |
-| RV-17 | Documentación y README corresponden al código actual | Documentado para línea base | PENDIENTE |
-| RV-18 | No hay datos reales ni secretos | Datos de ejemplo `.invalid` | PENDIENTE |
+Esta revision la preparo Claude (IA) por pedido de Camila Rissi, leyendo el codigo completo y ejecutando las pruebas. El dictamen final tiene que ser confirmado por Camila Rissi despues de leer el codigo (seccion Acta).
 
-## Registro de observaciones preliminares (no es revisión final)
+## Resultado por criterio
 
-- **OBS-01 / Alta / `GestorSolicitudes.java:189`:** colección mutable expuesta. Corrección esperada F4. Rechazar revisión final si persiste sin justificación.
-- **OBS-02 / Alta / `GestorSolicitudes.java:18–85`:** método de alta con ocho parámetros y validaciones mezcladas. F1 y F2 obligatorias según la propuesta; revisar errores y orden de validación.
-- **OBS-03 / Media / `GestorSolicitudes.java:219–222`:** reporte sujeto a cadenas literales; corregir comparaciones por enum y probar conteos.
-- **OBS-04 / Media / `GestorSolicitudes.java:192–203`:** formateo fuera de la capa de presentación; separar con compatibilidad de salidas.
+| ID | Criterio | Estado | Evidencia (archivo) | Detalle |
+|---|---|---|---|---|
+| RV-01 | Nombres expresan el dominio | OK | `GestorSolicitudes.java` | La variable `x` del filtro paso a `solicitud`. Se corrigio un nombre engañoso (OBS-R01) |
+| RV-02 | Un proposito y longitud razonable por metodo | OK | `evidencias/metricas_antes_despues.txt` | Metodo mas largo: 18 lineas (`ConsolaSolicitudes.procesar`, un switch). Antes: 68 |
+| RV-03 | Sin busqueda ni parsing duplicado | OK | `RepositorioSolicitudesEnMemoria.java`, `ConversorEnum.java` | Una busqueda por codigo y una conversion por enum |
+| RV-04 | Responsabilidades con cohesion | OBSERVACION | `GestorSolicitudes.java` | Mejora clara (formato, reporte, almacenamiento y consola afuera). El gestor aun busca estudiantes y responsables (OBS-R02) |
+| RV-05 | Sin colecciones mutables expuestas | OK | `RepositorioSolicitudesEnMemoria.todas`, CP-25 | Vista inmodificable |
+| RV-06 | Nulos y datos invalidos con mensajes previsibles | OBSERVACION | `ConversorEnum.java` | 25 errores de la caja negra con mensajes identicos. `toUpperCase()` depende de la configuracion regional (OBS-R03) |
+| RV-07 | Sin comparaciones enum contra texto | OK | `ReporteSolicitudes.java` | `EnumMap` y `==` |
+| RV-08 | Dominio independiente de la presentacion | OK | `GestorSolicitudes.java` | El gestor no imprime ni formatea |
+| RV-09 | Contratos claros | OBSERVACION | `DatosRegistroSolicitud.java`, `Solicitud.java` | El alta recibe un objeto. El constructor de `Solicitud` mantiene 8 parametros (OBS-R04) |
+| RV-10 | Abstracciones con utilidad | OK | `RepositorioSolicitudes.java` | Una sola interfaz, con segunda implementacion en CP-27. Sin interfaces para presentador ni reporte |
+| RV-11 | Se conservan las seis operaciones | OK | `evidencias/comparacion_caja_negra/` | Salida de 185 lineas identica a `estado-inicial` |
+| RV-12 | Pruebas tras cada cambio | OK | mensajes de commit F1 a F8 | Cada commit registra el resultado de las pruebas |
+| RV-13 | Snapshot de la demo sin cambios | OK | `evidencias/demo_refactorizado.txt` | Igual a `tests/expected_demo.txt` |
+| RV-14 | No se inventan resultados | OK | `evidencias/` | Logs generados con los scripts del repositorio. Las metricas son conteos simples, no analisis estatico |
+| RV-15 | Antes, commit y pruebas enlazados | OK | `docs/Refactorings_Antes_Despues.md` | Tabla con commit y resultado por refactoring |
+| RV-16 | Commits y tags son hitos reales | OK | `git tag` | `etapa-refactoring`, `etapa-pruebas`, `etapa-docs` y `estadorefactorizado` (ver README) |
+| RV-17 | Documentacion corresponde al codigo | OK | `README.md` | Actualizado; se corrigieron dos enlaces a archivos inexistentes (OBS-R05) |
+| RV-18 | Sin datos reales ni secretos | OK | `DatosDemo.java` | Datos ficticios con dominio `example.invalid` |
 
-## Acta de revisión de la versión refactorizada — A COMPLETAR CON EVIDENCIA REAL
+## Observaciones y acciones
 
-- Revisor/a efectivo/a: **[integrante que revise]**; fecha: **[fecha real]**.
-- Commit evaluado: **[hash real]**; rama: **[rama real]**.
-- Cambios evaluados: **[listar commits F1–F...]**.
-- Hallazgos remanentes, acciones y commits de corrección: **[registro posterior]**.
-- Criterio de aceptación: pruebas base + adicionales sin fallos, comportamiento preservado, cuatro refactorings demostrados, observaciones bloqueantes resueltas.
-- Dictamen: **NO EMITIDO (etapa 1)**.
+| ID | Severidad | Ubicacion | Observacion | Accion | Estado |
+|---|---|---|---|---|---|
+| OBS-01 (etapa 1) | Alta | `getSolicitudes` | Coleccion mutable expuesta | F4, prueba CP-25 | Cerrada (`80ae61e`) |
+| OBS-02 (etapa 1) | Alta | `registrarSolicitud` | Metodo largo y 8 parametros | F1 y F2 | Cerrada (`a6df0a2`, `38b9872`) |
+| OBS-03 (etapa 1) | Media | `reporte` | Comparacion por texto | F5, prueba CP-26 | Cerrada (`154318f`) |
+| OBS-04 (etapa 1) | Media | `formatearDetalle` | Formato en el gestor | F3 | Cerrada (`7335014`) |
+| OBS-R01 | Baja | `GestorSolicitudes.asignarResponsable` | Llamaba a `buscarResponsableOpcional` siendo el dato obligatorio | Rename Method y rama de vacio movida al registro | Cerrada (`9bce3a3`) |
+| OBS-R02 | Baja | `GestorSolicitudes.buscarEstudiante`, `buscarResponsable` | Busquedas lineales de estudiantes y responsables dentro del gestor | Evaluar catalogos con la misma forma que el repositorio si crecen las entidades | Abierta, mejora futura |
+| OBS-R03 | Baja | `ConversorEnum.convertir` | `toUpperCase()` sin `Locale.ROOT` (en configuracion regional turca la letra i cambia). Viene del codigo inicial | No se cambia en un refactoring porque altera comportamiento; usar `Locale.ROOT` en una etapa posterior | Abierta |
+| OBS-R04 | Baja | `Solicitud` (constructor) | 8 parametros en el constructor de la entidad | Se construye en un solo lugar; un builder seria sobreingenieria hoy | Abierta, aceptada |
+| OBS-R05 | Baja | `README.md` | Referenciaba `docs/Plan_Refactorings_Camila.md` y `docs/Checklist_Code_Review.md`, que no existen con esos nombres | Corregido en el README | Cerrada (commit de documentacion) |
+| OBS-R06 | Informativa | `scripts/*.sh` | Los scripts de regresion y de comparacion requieren bash; en Windows se usan con Git Bash o WSL | Documentado en el README | Abierta, informativa |
+| OBS-R07 | Informativa | `src/*.java` | Los literales con tildes estan como escapes unicode, menos legibles | Decision documentada en `docs/Decisiones_Tecnicas.md` | Aceptada |
+
+## Criterios de aceptacion tecnica
+
+1. Pruebas base y adicionales sin fallos: 27 aprobadas, 0 fallidas (`evidencias/pruebas_refactorizado.txt`). Cumplido.
+2. Comportamiento externo preservado: demo igual al snapshot y salida de caja negra identica a `estado-inicial`. Cumplido.
+3. Al menos cuatro refactorings demostrados, con Extract Method, Move Method e Introduce Parameter Object: ocho aplicados (F1 a F8). Cumplido.
+4. Observaciones bloqueantes resueltas: ninguna observacion alta o media queda abierta. Cumplido.
+
+## Acta
+
+- Revision preparada por: Claude (IA), con ejecucion real de pruebas; fecha 2026-11-07.
+- Commit evaluado: `9bce3a3`; rama `main`.
+- Cambios evaluados: commits `a5fef43` a `9bce3a3` (F1 a F8, evidencias y correccion OBS-R01).
+- Hallazgos remanentes: OBS-R02, OBS-R03, OBS-R04, OBS-R06 y OBS-R07 (ninguna bloqueante).
+- Dictamen propuesto: aceptada con observaciones menores.
+- Confirmacion del dictamen por la integrante que defiende el trabajo: Camila Rissi, [pendiente: completar fecha y firma despues de leer el codigo].
