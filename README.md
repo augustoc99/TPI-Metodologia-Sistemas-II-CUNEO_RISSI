@@ -2,7 +2,7 @@
 
 **Metodología de Sistemas II · Trabajo Práctico Integrador**  
 **Augusto M. Cúneo** — versión inicial y diagnóstico  
-**Camila Rissi** — refactorización y revisión técnica (etapa pendiente)
+**Camila Rissi** — refactorización y revisión técnica
 
 ## Descripción del sistema
 
