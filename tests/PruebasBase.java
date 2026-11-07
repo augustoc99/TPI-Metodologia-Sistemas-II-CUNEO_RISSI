@@ -15,12 +15,12 @@ public class PruebasBase {
         caso("CP-04", "Rechazar fecha inv\u00e1lida", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud(altaValida("S004").fecha("2026-13-40").construir()), "Fecha inv\u00e1lida"));
         caso("CP-05", "Rechazar tipo inv\u00e1lido", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud(altaValida("S004").tipo("OTRO").construir()), "Tipo inv\u00e1lido"));
         caso("CP-06", "Listar tres registros", () -> {
-            String listado = DatosDemo.crearGestor().listar();
+            String listado = new PresentadorSolicitudes().listado(DatosDemo.crearGestor().getSolicitudes());
             check(listado.contains("S001") && listado.contains("S002") && listado.contains("S003"), "faltan c\u00f3digos");
         });
         caso("CP-07", "Listar vac\u00edo", () -> {
             GestorSolicitudes g = new GestorSolicitudes(List.of(), List.of());
-            check(g.listar().contains("Sin solicitudes"), "no informa vac\u00edo");
+            check(new PresentadorSolicitudes().listado(g.getSolicitudes()).contains("Sin solicitudes"), "no informa vac\u00edo");
         });
         caso("CP-08", "Consultar existente", () -> eq("E001", DatosDemo.crearGestor().consultar("s001").getEstudiante().getLegajo()));
         caso("CP-09", "Consultar inexistente", () -> error(() -> DatosDemo.crearGestor().consultar("S999"), "Solicitud inexistente"));

@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         GestorSolicitudes gestor = DatosDemo.crearGestor();
+        PresentadorSolicitudes presentador = new PresentadorSolicitudes();
         if (args.length > 0 && args[0].equals("demo")) {
             ejecutarDemo(gestor);
             return;
@@ -30,8 +31,8 @@ public class Main {
                                     .fecha(fecha).responsableId(responsable).observacion(observacion).construir();
                             System.out.println("Registrada: " + gestor.registrarSolicitud(datos).getCodigo());
                         }
-                        case "2" -> System.out.print(gestor.listar());
-                        case "3" -> System.out.println(gestor.formatearDetalle(gestor.consultar(pedir(scanner,"C\u00f3digo"))));
+                        case "2" -> System.out.print(presentador.listado(gestor.getSolicitudes()));
+                        case "3" -> System.out.println(presentador.detalle(gestor.consultar(pedir(scanner,"C\u00f3digo"))));
                         case "4" -> System.out.println("Estado actualizado: " + gestor.cambiarEstado(pedir(scanner,"C\u00f3digo"),pedir(scanner,"Nuevo estado")).getEstado());
                         case "5" -> System.out.println("Responsable asignado: " + gestor.asignarResponsable(pedir(scanner,"C\u00f3digo"),pedir(scanner,"Responsable R01/R02")).getResponsable().getNombre());
                         case "6" -> System.out.println("Coincidencias: " + gestor.filtrar(pedir(scanner,"Tipo (opcional)"),pedir(scanner,"Prioridad (opcional)"),pedir(scanner,"Estado (opcional)")).size());

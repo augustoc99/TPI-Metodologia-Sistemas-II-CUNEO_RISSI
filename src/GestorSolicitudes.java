@@ -192,29 +192,6 @@ public class GestorSolicitudes {
 
     public List<Solicitud> getSolicitudes() { return solicitudes; }
 
-    public String formatearDetalle(Solicitud s) {
-        return "C\u00f3digo=" + s.getCodigo() + " | Estudiante=" + s.getEstudiante().getNombre()
-                + " (" + s.getEstudiante().getLegajo() + ")"
-                + " | Correo=" + s.getEstudiante().getCorreo()
-                + " | Tipo=" + s.getTipo().name()
-                + " | Prioridad=" + s.getPrioridad().name()
-                + " | Estado=" + s.getEstado().name()
-                + " | Responsable=" + (s.getResponsable() == null ? "SIN_ASIGNAR" : s.getResponsable().getNombre())
-                + " | Fecha=" + s.getFecha()
-                + " | Descripci\u00f3n=" + s.getDescripcion()
-                + " | Observaci\u00f3n=" + s.getObservacion();
-    }
-
-    public String listar() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("LISTADO DE SOLICITUDES\n");
-        if (solicitudes.isEmpty()) return sb.append("Sin solicitudes\n").toString();
-        for (Solicitud s : solicitudes) {
-            sb.append(formatearDetalle(s)).append('\n');
-        }
-        return sb.toString();
-    }
-
     public String reporte() {
         int pendientes = 0, enProceso = 0, resueltas = 0, altas = 0;
         for (Solicitud s : solicitudes) {
