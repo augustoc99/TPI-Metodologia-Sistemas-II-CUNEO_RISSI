@@ -1,12 +1,13 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GestorSolicitudes {
     private final List<Estudiante> estudiantes;
     private final List<Responsable> responsables;
-    private final ArrayList<Solicitud> solicitudes = new ArrayList<>();
+    private final List<Solicitud> solicitudes = new ArrayList<>();
 
     public GestorSolicitudes(List<Estudiante> estudiantes, List<Responsable> responsables) {
         this.estudiantes = estudiantes;
@@ -190,7 +191,9 @@ public class GestorSolicitudes {
         catch (IllegalArgumentException ex) { throw new IllegalArgumentException("Prioridad inv\u00e1lida: " + valor); }
     }
 
-    public List<Solicitud> getSolicitudes() { return solicitudes; }
+    public List<Solicitud> getSolicitudes() {
+        return Collections.unmodifiableList(solicitudes);
+    }
 
     public String reporte() {
         int pendientes = 0, enProceso = 0, resueltas = 0, altas = 0;

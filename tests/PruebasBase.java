@@ -58,6 +58,12 @@ public class PruebasBase {
             error(() -> g.registrarSolicitud(altaValida("S004").responsableId("NO").construir()), "Responsable inexistente");
             eq(3, g.getSolicitudes().size());
         });
+        caso("CP-25", "No permitir mutar la colecci\u00f3n expuesta", () -> {
+            GestorSolicitudes g = DatosDemo.crearGestor();
+            rechazaMutacion(() -> g.getSolicitudes().clear());
+            rechazaMutacion(() -> g.getSolicitudes().add(g.consultar("S001")));
+            eq(3, g.getSolicitudes().size());
+        });
         System.out.printf("TOTAL: %d aprobadas, %d fallidas%n", aprobadas, fallidas);
         if (fallidas != 0) System.exit(1);
     }
@@ -69,6 +75,10 @@ public class PruebasBase {
     private static void caso(String id, String nombre, Runnable accion) {
         try { accion.run(); aprobadas++; System.out.println("[OK] " + id + " " + nombre); }
         catch (Throwable t) { fallidas++; System.out.println("[FAIL] " + id + " " + nombre + " -> " + t); }
+    }
+    private static void rechazaMutacion(Runnable r) {
+        try { r.run(); } catch (UnsupportedOperationException ex) { return; }
+        throw new AssertionError("se esperaba UnsupportedOperationException");
     }
     private static void eq(Object esperado, Object real) {
         if (!esperado.equals(real)) throw new AssertionError("esperado=" + esperado + " real=" + real);
