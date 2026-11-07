@@ -16,70 +16,79 @@ public class GestorSolicitudes {
     public Solicitud registrarSolicitud(String codigo, String legajo, String descripcion,
                                        String tipoTexto, String prioridadTexto, String fechaTexto,
                                        String responsableId, String observacion) {
-        if (codigo == null || codigo.isBlank()) {
-            throw new IllegalArgumentException("C\u00f3digo obligatorio");
-        }
+        validarCodigoNuevo(codigo);
+        Estudiante estudiante = buscarEstudiante(legajo);
+        exigirTexto(descripcion, "Descripci\u00f3n obligatoria");
+        TipoSolicitud tipo = convertirTipoObligatorio(tipoTexto);
+        Prioridad prioridad = convertirPrioridadObligatoria(prioridadTexto);
+        LocalDate fecha = convertirFecha(fechaTexto);
+        Responsable responsable = buscarResponsableOpcional(responsableId);
+        Solicitud nueva = new Solicitud(codigo.trim(), estudiante, descripcion.trim(),
+                tipo, prioridad, fecha, normalizarObservacion(observacion), responsable);
+        solicitudes.add(nueva);
+        return nueva;
+    }
+
+    private void validarCodigoNuevo(String codigo) {
+        exigirTexto(codigo, "C\u00f3digo obligatorio");
         for (Solicitud s : solicitudes) {
             if (s.getCodigo().equalsIgnoreCase(codigo.trim())) {
                 throw new IllegalArgumentException("C\u00f3digo duplicado: " + codigo.trim());
             }
         }
-        if (legajo == null || legajo.isBlank()) {
-            throw new IllegalArgumentException("Legajo obligatorio");
+    }
+
+    private static void exigirTexto(String valor, String mensajeError) {
+        if (valor == null || valor.isBlank()) {
+            throw new IllegalArgumentException(mensajeError);
         }
-        Estudiante encontrado = null;
+    }
+
+    private Estudiante buscarEstudiante(String legajo) {
+        exigirTexto(legajo, "Legajo obligatorio");
         for (Estudiante e : estudiantes) {
             if (e.getLegajo().equalsIgnoreCase(legajo.trim())) {
-                encontrado = e;
-                break;
+                return e;
             }
         }
-        if (encontrado == null) {
-            throw new IllegalArgumentException("Estudiante inexistente: " + legajo);
-        }
-        if (descripcion == null || descripcion.isBlank()) {
-            throw new IllegalArgumentException("Descripci\u00f3n obligatoria");
-        }
-        if (tipoTexto == null || tipoTexto.isBlank()) {
-            throw new IllegalArgumentException("Tipo obligatorio");
-        }
-        TipoSolicitud tipo;
-        try {
-            tipo = TipoSolicitud.valueOf(tipoTexto.trim().toUpperCase());
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Tipo inv\u00e1lido: " + tipoTexto);
-        }
-        if (prioridadTexto == null || prioridadTexto.isBlank()) {
-            throw new IllegalArgumentException("Prioridad obligatoria");
-        }
-        Prioridad prioridad;
-        try {
-            prioridad = Prioridad.valueOf(prioridadTexto.trim().toUpperCase());
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Prioridad inv\u00e1lida: " + prioridadTexto);
-        }
-        LocalDate fecha;
-        try {
-            fecha = LocalDate.parse(fechaTexto);
-        } catch (DateTimeParseException | NullPointerException ex) {
+        throw new IllegalArgumentException("Estudiante inexistente: " + legajo);
+    }
+
+    private TipoSolicitud convertirTipoObligatorio(String tipoTexto) {
+        exigirTexto(tipoTexto, "Tipo obligatorio");
+        return parseTipo(tipoTexto);
+    }
+
+    private Prioridad convertirPrioridadObligatoria(String prioridadTexto) {
+        exigirTexto(prioridadTexto, "Prioridad obligatoria");
+        return parsePrioridad(prioridadTexto);
+    }
+
+    private LocalDate convertirFecha(String fechaTexto) {
+        if (fechaTexto == null) {
             throw new IllegalArgumentException("Fecha inv\u00e1lida (AAAA-MM-DD)");
         }
-        Responsable responsable = null;
-        if (responsableId != null && !responsableId.isBlank()) {
-            for (Responsable r : responsables) {
-                if (r.getId().equalsIgnoreCase(responsableId.trim())) {
-                    responsable = r;
-                    break;
-                }
-            }
-            if (responsable == null) {
-                throw new IllegalArgumentException("Responsable inexistente: " + responsableId);
+        try {
+            return LocalDate.parse(fechaTexto);
+        } catch (DateTimeParseException ex) {
+            throw new IllegalArgumentException("Fecha inv\u00e1lida (AAAA-MM-DD)");
+        }
+    }
+
+    private Responsable buscarResponsableOpcional(String responsableId) {
+        if (responsableId == null || responsableId.isBlank()) {
+            return null;
+        }
+        for (Responsable r : responsables) {
+            if (r.getId().equalsIgnoreCase(responsableId.trim())) {
+                return r;
             }
         }
-        Solicitud nueva = new Solicitud(codigo.trim(), encontrado, descripcion.trim(),
-                tipo, prioridad, fecha, observacion == null ? "" : observacion.trim(), responsable);
-        solicitudes.add(nueva);
-        return nueva;
+        throw new IllegalArgumentException("Responsable inexistente: " + responsableId);
+    }
+
+    private static String normalizarObservacion(String observacion) {
+        return observacion == null ? "" : observacion.trim();
     }
 
     public Solicitud consultar(String codigo) {
