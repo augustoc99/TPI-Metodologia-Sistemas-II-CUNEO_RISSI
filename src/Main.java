@@ -25,7 +25,10 @@ public class Main {
                             String fecha = pedir(scanner,"Fecha AAAA-MM-DD");
                             String responsable = pedir(scanner,"Responsable R01/R02 (opcional)");
                             String observacion = pedir(scanner,"Observaci\u00f3n (opcional)");
-                            System.out.println("Registrada: " + gestor.registrarSolicitud(codigo,legajo,descripcion,tipo,prioridad,fecha,responsable,observacion).getCodigo());
+                            DatosRegistroSolicitud datos = DatosRegistroSolicitud.conCodigo(codigo).legajo(legajo)
+                                    .descripcion(descripcion).tipo(tipo).prioridad(prioridad)
+                                    .fecha(fecha).responsableId(responsable).observacion(observacion).construir();
+                            System.out.println("Registrada: " + gestor.registrarSolicitud(datos).getCodigo());
                         }
                         case "2" -> System.out.print(gestor.listar());
                         case "3" -> System.out.println(gestor.formatearDetalle(gestor.consultar(pedir(scanner,"C\u00f3digo"))));
@@ -48,7 +51,9 @@ public class Main {
     }
     private static void ejecutarDemo(GestorSolicitudes gestor) {
         System.out.println("=== DEMO DETERMINISTA / VERSI\u00d3N INICIAL ===");
-        System.out.println("Registrar S004: " + gestor.registrarSolicitud("S004","E002","Copia programa","CERTIFICADO","ALTA","2026-11-04","","Urgente").getCodigo());
+        System.out.println("Registrar S004: " + gestor.registrarSolicitud(DatosRegistroSolicitud.conCodigo("S004").legajo("E002")
+                .descripcion("Copia programa").tipo("CERTIFICADO").prioridad("ALTA")
+                .fecha("2026-11-04").responsableId("").observacion("Urgente").construir()).getCodigo());
         System.out.println("Consultar S004: " + gestor.consultar("S004").getEstado());
         System.out.println("Asignar S004: " + gestor.asignarResponsable("S004","R01").getResponsable().getId());
         System.out.println("Cambiar estado S004: " + gestor.cambiarEstado("S004","EN_PROCESO").getEstado());

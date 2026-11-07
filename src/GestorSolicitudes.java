@@ -13,18 +13,16 @@ public class GestorSolicitudes {
         this.responsables = responsables;
     }
 
-    public Solicitud registrarSolicitud(String codigo, String legajo, String descripcion,
-                                       String tipoTexto, String prioridadTexto, String fechaTexto,
-                                       String responsableId, String observacion) {
-        validarCodigoNuevo(codigo);
-        Estudiante estudiante = buscarEstudiante(legajo);
-        exigirTexto(descripcion, "Descripci\u00f3n obligatoria");
-        TipoSolicitud tipo = convertirTipoObligatorio(tipoTexto);
-        Prioridad prioridad = convertirPrioridadObligatoria(prioridadTexto);
-        LocalDate fecha = convertirFecha(fechaTexto);
-        Responsable responsable = buscarResponsableOpcional(responsableId);
-        Solicitud nueva = new Solicitud(codigo.trim(), estudiante, descripcion.trim(),
-                tipo, prioridad, fecha, normalizarObservacion(observacion), responsable);
+    public Solicitud registrarSolicitud(DatosRegistroSolicitud datos) {
+        validarCodigoNuevo(datos.codigo());
+        Estudiante estudiante = buscarEstudiante(datos.legajo());
+        exigirTexto(datos.descripcion(), "Descripci\u00f3n obligatoria");
+        TipoSolicitud tipo = convertirTipoObligatorio(datos.tipo());
+        Prioridad prioridad = convertirPrioridadObligatoria(datos.prioridad());
+        LocalDate fecha = convertirFecha(datos.fecha());
+        Responsable responsable = buscarResponsableOpcional(datos.responsableId());
+        Solicitud nueva = new Solicitud(datos.codigo().trim(), estudiante, datos.descripcion().trim(),
+                tipo, prioridad, fecha, normalizarObservacion(datos.observacion()), responsable);
         solicitudes.add(nueva);
         return nueva;
     }

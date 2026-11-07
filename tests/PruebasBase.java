@@ -7,13 +7,13 @@ public class PruebasBase {
     public static void main(String[] args) {
         caso("CP-01", "Registrar v\u00e1lida", () -> {
             GestorSolicitudes g = DatosDemo.crearGestor();
-            eq("S004", g.registrarSolicitud("S004","E001","Solicitud","CERTIFICADO","MEDIA","2026-11-04","","nota").getCodigo());
+            eq("S004", g.registrarSolicitud(altaValida("S004").observacion("nota").construir()).getCodigo());
             eq(4, g.getSolicitudes().size());
         });
-        caso("CP-02", "Rechazar c\u00f3digo duplicado", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S001","E001","Solicitud","CERTIFICADO","MEDIA","2026-11-04","",""), "C\u00f3digo duplicado"));
-        caso("CP-03", "Rechazar estudiante inexistente", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S004","NO","Solicitud","CERTIFICADO","MEDIA","2026-11-04","",""), "Estudiante inexistente"));
-        caso("CP-04", "Rechazar fecha inv\u00e1lida", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S004","E001","Solicitud","CERTIFICADO","MEDIA","2026-13-40","",""), "Fecha inv\u00e1lida"));
-        caso("CP-05", "Rechazar tipo inv\u00e1lido", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S004","E001","Solicitud","OTRO","MEDIA","2026-11-04","",""), "Tipo inv\u00e1lido"));
+        caso("CP-02", "Rechazar c\u00f3digo duplicado", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud(altaValida("S001").construir()), "C\u00f3digo duplicado"));
+        caso("CP-03", "Rechazar estudiante inexistente", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud(altaValida("S004").legajo("NO").construir()), "Estudiante inexistente"));
+        caso("CP-04", "Rechazar fecha inv\u00e1lida", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud(altaValida("S004").fecha("2026-13-40").construir()), "Fecha inv\u00e1lida"));
+        caso("CP-05", "Rechazar tipo inv\u00e1lido", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud(altaValida("S004").tipo("OTRO").construir()), "Tipo inv\u00e1lido"));
         caso("CP-06", "Listar tres registros", () -> {
             String listado = DatosDemo.crearGestor().listar();
             check(listado.contains("S001") && listado.contains("S002") && listado.contains("S003"), "faltan c\u00f3digos");
@@ -55,11 +55,16 @@ public class PruebasBase {
         caso("CP-23", "Reporte sin solicitudes", () -> check(new GestorSolicitudes(List.of(),List.of()).reporte().contains("Total: 0"), "sin cero"));
         caso("CP-24", "Proteger registro de responsable inv\u00e1lido", () -> {
             GestorSolicitudes g = DatosDemo.crearGestor();
-            error(() -> g.registrarSolicitud("S004","E001","Solicitud","CERTIFICADO","MEDIA","2026-11-04","NO",""), "Responsable inexistente");
+            error(() -> g.registrarSolicitud(altaValida("S004").responsableId("NO").construir()), "Responsable inexistente");
             eq(3, g.getSolicitudes().size());
         });
         System.out.printf("TOTAL: %d aprobadas, %d fallidas%n", aprobadas, fallidas);
         if (fallidas != 0) System.exit(1);
+    }
+    private static DatosRegistroSolicitud.Builder altaValida(String codigo) {
+        return DatosRegistroSolicitud.conCodigo(codigo).legajo("E001").descripcion("Solicitud")
+                .tipo("CERTIFICADO").prioridad("MEDIA").fecha("2026-11-04")
+                .responsableId("").observacion("");
     }
     private static void caso(String id, String nombre, Runnable accion) {
         try { accion.run(); aprobadas++; System.out.println("[OK] " + id + " " + nombre); }
