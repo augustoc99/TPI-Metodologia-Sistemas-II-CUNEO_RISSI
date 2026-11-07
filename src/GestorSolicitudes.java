@@ -5,6 +5,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class GestorSolicitudes {
+    private static final ConversorEnum<TipoSolicitud> TIPOS =
+            new ConversorEnum<>(TipoSolicitud.class, Mensajes.TIPO_OBLIGATORIO, Mensajes.TIPO_INVALIDO);
+    private static final ConversorEnum<Prioridad> PRIORIDADES =
+            new ConversorEnum<>(Prioridad.class, Mensajes.PRIORIDAD_OBLIGATORIA, Mensajes.PRIORIDAD_INVALIDA);
+    private static final ConversorEnum<Estado> ESTADOS =
+            new ConversorEnum<>(Estado.class, Mensajes.ESTADO_OBLIGATORIO, Mensajes.ESTADO_INVALIDO);
+
     private final List<Estudiante> estudiantes;
     private final List<Responsable> responsables;
     private final List<Solicitud> solicitudes = new ArrayList<>();
@@ -17,9 +24,9 @@ public class GestorSolicitudes {
     public Solicitud registrarSolicitud(DatosRegistroSolicitud datos) {
         validarCodigoNuevo(datos.codigo());
         Estudiante estudiante = buscarEstudiante(datos.legajo());
-        exigirTexto(datos.descripcion(), "Descripci\u00f3n obligatoria");
-        TipoSolicitud tipo = convertirTipoObligatorio(datos.tipo());
-        Prioridad prioridad = convertirPrioridadObligatoria(datos.prioridad());
+        exigirTexto(datos.descripcion(), Mensajes.DESCRIPCION_OBLIGATORIA);
+        TipoSolicitud tipo = TIPOS.requerido(datos.tipo());
+        Prioridad prioridad = PRIORIDADES.requerido(datos.prioridad());
         LocalDate fecha = convertirFecha(datos.fecha());
         Responsable responsable = buscarResponsableOpcional(datos.responsableId());
         Solicitud nueva = new Solicitud(datos.codigo().trim(), estudiante, datos.descripcion().trim(),
@@ -28,11 +35,53 @@ public class GestorSolicitudes {
         return nueva;
     }
 
-    private void validarCodigoNuevo(String codigo) {
-        exigirTexto(codigo, "C\u00f3digo obligatorio");
+    public Solicitud consultar(String codigo) {
+        exigirTexto(codigo, Mensajes.CODIGO_OBLIGATORIO);
         for (Solicitud s : solicitudes) {
             if (s.getCodigo().equalsIgnoreCase(codigo.trim())) {
-                throw new IllegalArgumentException("C\u00f3digo duplicado: " + codigo.trim());
+                return s;
+            }
+        }
+        throw new IllegalArgumentException(Mensajes.SOLICITUD_INEXISTENTE + codigo);
+    }
+
+    public Solicitud cambiarEstado(String codigo, String estadoTexto) {
+        Solicitud solicitud = consultar(codigo);
+        solicitud.setEstado(ESTADOS.requerido(estadoTexto));
+        return solicitud;
+    }
+
+    public Solicitud asignarResponsable(String codigo, String responsableId) {
+        Solicitud solicitud = consultar(codigo);
+        exigirTexto(responsableId, Mensajes.RESPONSABLE_OBLIGATORIO);
+        solicitud.setResponsable(buscarResponsableOpcional(responsableId));
+        return solicitud;
+    }
+
+    public List<Solicitud> filtrar(String tipoTexto, String prioridadTexto, String estadoTexto) {
+        TipoSolicitud tipo = TIPOS.opcional(tipoTexto);
+        Prioridad prioridad = PRIORIDADES.opcional(prioridadTexto);
+        Estado estado = ESTADOS.opcional(estadoTexto);
+        List<Solicitud> resultado = new ArrayList<>();
+        for (Solicitud solicitud : solicitudes) {
+            if ((tipo == null || solicitud.getTipo() == tipo)
+                    && (prioridad == null || solicitud.getPrioridad() == prioridad)
+                    && (estado == null || solicitud.getEstado() == estado)) {
+                resultado.add(solicitud);
+            }
+        }
+        return resultado;
+    }
+
+    public List<Solicitud> getSolicitudes() {
+        return Collections.unmodifiableList(solicitudes);
+    }
+
+    private void validarCodigoNuevo(String codigo) {
+        exigirTexto(codigo, Mensajes.CODIGO_OBLIGATORIO);
+        for (Solicitud s : solicitudes) {
+            if (s.getCodigo().equalsIgnoreCase(codigo.trim())) {
+                throw new IllegalArgumentException(Mensajes.CODIGO_DUPLICADO + codigo.trim());
             }
         }
     }
@@ -44,33 +93,23 @@ public class GestorSolicitudes {
     }
 
     private Estudiante buscarEstudiante(String legajo) {
-        exigirTexto(legajo, "Legajo obligatorio");
+        exigirTexto(legajo, Mensajes.LEGAJO_OBLIGATORIO);
         for (Estudiante e : estudiantes) {
             if (e.getLegajo().equalsIgnoreCase(legajo.trim())) {
                 return e;
             }
         }
-        throw new IllegalArgumentException("Estudiante inexistente: " + legajo);
-    }
-
-    private TipoSolicitud convertirTipoObligatorio(String tipoTexto) {
-        exigirTexto(tipoTexto, "Tipo obligatorio");
-        return parseTipo(tipoTexto);
-    }
-
-    private Prioridad convertirPrioridadObligatoria(String prioridadTexto) {
-        exigirTexto(prioridadTexto, "Prioridad obligatoria");
-        return parsePrioridad(prioridadTexto);
+        throw new IllegalArgumentException(Mensajes.ESTUDIANTE_INEXISTENTE + legajo);
     }
 
     private LocalDate convertirFecha(String fechaTexto) {
         if (fechaTexto == null) {
-            throw new IllegalArgumentException("Fecha inv\u00e1lida (AAAA-MM-DD)");
+            throw new IllegalArgumentException(Mensajes.FECHA_INVALIDA);
         }
         try {
             return LocalDate.parse(fechaTexto);
         } catch (DateTimeParseException ex) {
-            throw new IllegalArgumentException("Fecha inv\u00e1lida (AAAA-MM-DD)");
+            throw new IllegalArgumentException(Mensajes.FECHA_INVALIDA);
         }
     }
 
@@ -83,115 +122,10 @@ public class GestorSolicitudes {
                 return r;
             }
         }
-        throw new IllegalArgumentException("Responsable inexistente: " + responsableId);
+        throw new IllegalArgumentException(Mensajes.RESPONSABLE_INEXISTENTE + responsableId);
     }
 
     private static String normalizarObservacion(String observacion) {
         return observacion == null ? "" : observacion.trim();
-    }
-
-    public Solicitud consultar(String codigo) {
-        if (codigo == null || codigo.isBlank()) {
-            throw new IllegalArgumentException("C\u00f3digo obligatorio");
-        }
-        for (Solicitud s : solicitudes) {
-            if (s.getCodigo().equalsIgnoreCase(codigo.trim())) {
-                return s;
-            }
-        }
-        throw new IllegalArgumentException("Solicitud inexistente: " + codigo);
-    }
-
-    public Solicitud cambiarEstado(String codigo, String estadoTexto) {
-        if (codigo == null || codigo.isBlank()) {
-            throw new IllegalArgumentException("C\u00f3digo obligatorio");
-        }
-        Solicitud encontrada = null;
-        for (Solicitud s : solicitudes) {
-            if (s.getCodigo().equalsIgnoreCase(codigo.trim())) {
-                encontrada = s;
-                break;
-            }
-        }
-        if (encontrada == null) {
-            throw new IllegalArgumentException("Solicitud inexistente: " + codigo);
-        }
-        if (estadoTexto == null || estadoTexto.isBlank()) {
-            throw new IllegalArgumentException("Estado obligatorio");
-        }
-        try {
-            encontrada.setEstado(Estado.valueOf(estadoTexto.trim().toUpperCase()));
-        } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Estado inv\u00e1lido: " + estadoTexto);
-        }
-        return encontrada;
-    }
-
-    public Solicitud asignarResponsable(String codigo, String responsableId) {
-        if (codigo == null || codigo.isBlank()) {
-            throw new IllegalArgumentException("C\u00f3digo obligatorio");
-        }
-        Solicitud encontrada = null;
-        for (Solicitud s : solicitudes) {
-            if (s.getCodigo().equalsIgnoreCase(codigo.trim())) {
-                encontrada = s;
-                break;
-            }
-        }
-        if (encontrada == null) {
-            throw new IllegalArgumentException("Solicitud inexistente: " + codigo);
-        }
-        if (responsableId == null || responsableId.isBlank()) {
-            throw new IllegalArgumentException("Responsable obligatorio");
-        }
-        Responsable responsable = null;
-        for (Responsable r : responsables) {
-            if (r.getId().equalsIgnoreCase(responsableId.trim())) {
-                responsable = r;
-                break;
-            }
-        }
-        if (responsable == null) {
-            throw new IllegalArgumentException("Responsable inexistente: " + responsableId);
-        }
-        encontrada.setResponsable(responsable);
-        return encontrada;
-    }
-
-    public List<Solicitud> filtrar(String tipoTexto, String prioridadTexto, String estadoTexto) {
-        TipoSolicitud tipo = tipoTexto == null || tipoTexto.isBlank() ? null : parseTipo(tipoTexto);
-        Prioridad prioridad = prioridadTexto == null || prioridadTexto.isBlank() ? null : parsePrioridad(prioridadTexto);
-        Estado estado;
-        if (estadoTexto == null || estadoTexto.isBlank()) {
-            estado = null;
-        } else {
-            try {
-                estado = Estado.valueOf(estadoTexto.trim().toUpperCase());
-            } catch (IllegalArgumentException ex) {
-                throw new IllegalArgumentException("Estado inv\u00e1lido: " + estadoTexto);
-            }
-        }
-        List<Solicitud> resultado = new ArrayList<>();
-        for (Solicitud x : solicitudes) {
-            if ((tipo == null || x.getTipo() == tipo)
-                    && (prioridad == null || x.getPrioridad() == prioridad)
-                    && (estado == null || x.getEstado() == estado)) {
-                resultado.add(x);
-            }
-        }
-        return resultado;
-    }
-
-    private TipoSolicitud parseTipo(String valor) {
-        try { return TipoSolicitud.valueOf(valor.trim().toUpperCase()); }
-        catch (IllegalArgumentException ex) { throw new IllegalArgumentException("Tipo inv\u00e1lido: " + valor); }
-    }
-    private Prioridad parsePrioridad(String valor) {
-        try { return Prioridad.valueOf(valor.trim().toUpperCase()); }
-        catch (IllegalArgumentException ex) { throw new IllegalArgumentException("Prioridad inv\u00e1lida: " + valor); }
-    }
-
-    public List<Solicitud> getSolicitudes() {
-        return Collections.unmodifiableList(solicitudes);
     }
 }
