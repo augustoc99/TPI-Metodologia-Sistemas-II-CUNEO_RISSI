@@ -33,7 +33,7 @@ public class GestorSolicitudes {
         TipoSolicitud tipo = TIPOS.requerido(datos.tipo());
         Prioridad prioridad = PRIORIDADES.requerido(datos.prioridad());
         LocalDate fecha = convertirFecha(datos.fecha());
-        Responsable responsable = buscarResponsableOpcional(datos.responsableId());
+        Responsable responsable = esVacio(datos.responsableId()) ? null : buscarResponsable(datos.responsableId());
         Solicitud nueva = new Solicitud(datos.codigo().trim(), estudiante, datos.descripcion().trim(),
                 tipo, prioridad, fecha, normalizarObservacion(datos.observacion()), responsable);
         repositorio.agregar(nueva);
@@ -55,7 +55,7 @@ public class GestorSolicitudes {
     public Solicitud asignarResponsable(String codigo, String responsableId) {
         Solicitud solicitud = consultar(codigo);
         exigirTexto(responsableId, Mensajes.RESPONSABLE_OBLIGATORIO);
-        solicitud.setResponsable(buscarResponsableOpcional(responsableId));
+        solicitud.setResponsable(buscarResponsable(responsableId));
         return solicitud;
     }
 
@@ -86,9 +86,13 @@ public class GestorSolicitudes {
     }
 
     private static void exigirTexto(String valor, String mensajeError) {
-        if (valor == null || valor.isBlank()) {
+        if (esVacio(valor)) {
             throw new IllegalArgumentException(mensajeError);
         }
+    }
+
+    private static boolean esVacio(String valor) {
+        return valor == null || valor.isBlank();
     }
 
     private Estudiante buscarEstudiante(String legajo) {
@@ -112,10 +116,7 @@ public class GestorSolicitudes {
         }
     }
 
-    private Responsable buscarResponsableOpcional(String responsableId) {
-        if (responsableId == null || responsableId.isBlank()) {
-            return null;
-        }
+    private Responsable buscarResponsable(String responsableId) {
         for (Responsable r : responsables) {
             if (r.getId().equalsIgnoreCase(responsableId.trim())) {
                 return r;
