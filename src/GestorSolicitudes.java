@@ -3,7 +3,6 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Versión didáctica deliberadamente monolítica: comportamiento correcto, estructura mejorable. */
 public class GestorSolicitudes {
     private final List<Estudiante> estudiantes;
     private final List<Responsable> responsables;
@@ -14,16 +13,15 @@ public class GestorSolicitudes {
         this.responsables = responsables;
     }
 
-    // Registro concentrado: búsqueda, validación, conversiones, regla y almacenamiento.
     public Solicitud registrarSolicitud(String codigo, String legajo, String descripcion,
                                        String tipoTexto, String prioridadTexto, String fechaTexto,
                                        String responsableId, String observacion) {
         if (codigo == null || codigo.isBlank()) {
-            throw new IllegalArgumentException("Código obligatorio");
+            throw new IllegalArgumentException("C\u00f3digo obligatorio");
         }
         for (Solicitud s : solicitudes) {
             if (s.getCodigo().equalsIgnoreCase(codigo.trim())) {
-                throw new IllegalArgumentException("Código duplicado: " + codigo.trim());
+                throw new IllegalArgumentException("C\u00f3digo duplicado: " + codigo.trim());
             }
         }
         if (legajo == null || legajo.isBlank()) {
@@ -40,7 +38,7 @@ public class GestorSolicitudes {
             throw new IllegalArgumentException("Estudiante inexistente: " + legajo);
         }
         if (descripcion == null || descripcion.isBlank()) {
-            throw new IllegalArgumentException("Descripción obligatoria");
+            throw new IllegalArgumentException("Descripci\u00f3n obligatoria");
         }
         if (tipoTexto == null || tipoTexto.isBlank()) {
             throw new IllegalArgumentException("Tipo obligatorio");
@@ -49,7 +47,7 @@ public class GestorSolicitudes {
         try {
             tipo = TipoSolicitud.valueOf(tipoTexto.trim().toUpperCase());
         } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Tipo inválido: " + tipoTexto);
+            throw new IllegalArgumentException("Tipo inv\u00e1lido: " + tipoTexto);
         }
         if (prioridadTexto == null || prioridadTexto.isBlank()) {
             throw new IllegalArgumentException("Prioridad obligatoria");
@@ -58,13 +56,13 @@ public class GestorSolicitudes {
         try {
             prioridad = Prioridad.valueOf(prioridadTexto.trim().toUpperCase());
         } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Prioridad inválida: " + prioridadTexto);
+            throw new IllegalArgumentException("Prioridad inv\u00e1lida: " + prioridadTexto);
         }
         LocalDate fecha;
         try {
             fecha = LocalDate.parse(fechaTexto);
         } catch (DateTimeParseException | NullPointerException ex) {
-            throw new IllegalArgumentException("Fecha inválida (AAAA-MM-DD)");
+            throw new IllegalArgumentException("Fecha inv\u00e1lida (AAAA-MM-DD)");
         }
         Responsable responsable = null;
         if (responsableId != null && !responsableId.isBlank()) {
@@ -86,7 +84,7 @@ public class GestorSolicitudes {
 
     public Solicitud consultar(String codigo) {
         if (codigo == null || codigo.isBlank()) {
-            throw new IllegalArgumentException("Código obligatorio");
+            throw new IllegalArgumentException("C\u00f3digo obligatorio");
         }
         for (Solicitud s : solicitudes) {
             if (s.getCodigo().equalsIgnoreCase(codigo.trim())) {
@@ -98,7 +96,7 @@ public class GestorSolicitudes {
 
     public Solicitud cambiarEstado(String codigo, String estadoTexto) {
         if (codigo == null || codigo.isBlank()) {
-            throw new IllegalArgumentException("Código obligatorio");
+            throw new IllegalArgumentException("C\u00f3digo obligatorio");
         }
         Solicitud encontrada = null;
         for (Solicitud s : solicitudes) {
@@ -116,14 +114,14 @@ public class GestorSolicitudes {
         try {
             encontrada.setEstado(Estado.valueOf(estadoTexto.trim().toUpperCase()));
         } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Estado inválido: " + estadoTexto);
+            throw new IllegalArgumentException("Estado inv\u00e1lido: " + estadoTexto);
         }
         return encontrada;
     }
 
     public Solicitud asignarResponsable(String codigo, String responsableId) {
         if (codigo == null || codigo.isBlank()) {
-            throw new IllegalArgumentException("Código obligatorio");
+            throw new IllegalArgumentException("C\u00f3digo obligatorio");
         }
         Solicitud encontrada = null;
         for (Solicitud s : solicitudes) {
@@ -162,7 +160,7 @@ public class GestorSolicitudes {
             try {
                 estado = Estado.valueOf(estadoTexto.trim().toUpperCase());
             } catch (IllegalArgumentException ex) {
-                throw new IllegalArgumentException("Estado inválido: " + estadoTexto);
+                throw new IllegalArgumentException("Estado inv\u00e1lido: " + estadoTexto);
             }
         }
         List<Solicitud> resultado = new ArrayList<>();
@@ -178,19 +176,17 @@ public class GestorSolicitudes {
 
     private TipoSolicitud parseTipo(String valor) {
         try { return TipoSolicitud.valueOf(valor.trim().toUpperCase()); }
-        catch (IllegalArgumentException ex) { throw new IllegalArgumentException("Tipo inválido: " + valor); }
+        catch (IllegalArgumentException ex) { throw new IllegalArgumentException("Tipo inv\u00e1lido: " + valor); }
     }
     private Prioridad parsePrioridad(String valor) {
         try { return Prioridad.valueOf(valor.trim().toUpperCase()); }
-        catch (IllegalArgumentException ex) { throw new IllegalArgumentException("Prioridad inválida: " + valor); }
+        catch (IllegalArgumentException ex) { throw new IllegalArgumentException("Prioridad inv\u00e1lida: " + valor); }
     }
 
-    // Devolución directa de la colección mutable: defecto de encapsulamiento a corregir.
     public List<Solicitud> getSolicitudes() { return solicitudes; }
 
-    // Presentación colocada en el gestor en vez de un formatter especializado.
     public String formatearDetalle(Solicitud s) {
-        return "Código=" + s.getCodigo() + " | Estudiante=" + s.getEstudiante().getNombre()
+        return "C\u00f3digo=" + s.getCodigo() + " | Estudiante=" + s.getEstudiante().getNombre()
                 + " (" + s.getEstudiante().getLegajo() + ")"
                 + " | Correo=" + s.getEstudiante().getCorreo()
                 + " | Tipo=" + s.getTipo().name()
@@ -198,8 +194,8 @@ public class GestorSolicitudes {
                 + " | Estado=" + s.getEstado().name()
                 + " | Responsable=" + (s.getResponsable() == null ? "SIN_ASIGNAR" : s.getResponsable().getNombre())
                 + " | Fecha=" + s.getFecha()
-                + " | Descripción=" + s.getDescripcion()
-                + " | Observación=" + s.getObservacion();
+                + " | Descripci\u00f3n=" + s.getDescripcion()
+                + " | Observaci\u00f3n=" + s.getObservacion();
     }
 
     public String listar() {

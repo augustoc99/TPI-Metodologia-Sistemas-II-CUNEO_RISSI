@@ -1,60 +1,59 @@
 import java.util.List;
 
-/** Pruebas sin frameworks ni dependencias externas. Cada CP es independiente. */
 public class PruebasBase {
     private static int aprobadas = 0;
     private static int fallidas = 0;
 
     public static void main(String[] args) {
-        caso("CP-01", "Registrar válida", () -> {
+        caso("CP-01", "Registrar v\u00e1lida", () -> {
             GestorSolicitudes g = DatosDemo.crearGestor();
             eq("S004", g.registrarSolicitud("S004","E001","Solicitud","CERTIFICADO","MEDIA","2026-11-04","","nota").getCodigo());
             eq(4, g.getSolicitudes().size());
         });
-        caso("CP-02", "Rechazar código duplicado", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S001","E001","Solicitud","CERTIFICADO","MEDIA","2026-11-04","",""), "Código duplicado"));
+        caso("CP-02", "Rechazar c\u00f3digo duplicado", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S001","E001","Solicitud","CERTIFICADO","MEDIA","2026-11-04","",""), "C\u00f3digo duplicado"));
         caso("CP-03", "Rechazar estudiante inexistente", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S004","NO","Solicitud","CERTIFICADO","MEDIA","2026-11-04","",""), "Estudiante inexistente"));
-        caso("CP-04", "Rechazar fecha inválida", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S004","E001","Solicitud","CERTIFICADO","MEDIA","2026-13-40","",""), "Fecha inválida"));
-        caso("CP-05", "Rechazar tipo inválido", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S004","E001","Solicitud","OTRO","MEDIA","2026-11-04","",""), "Tipo inválido"));
+        caso("CP-04", "Rechazar fecha inv\u00e1lida", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S004","E001","Solicitud","CERTIFICADO","MEDIA","2026-13-40","",""), "Fecha inv\u00e1lida"));
+        caso("CP-05", "Rechazar tipo inv\u00e1lido", () -> error(() -> DatosDemo.crearGestor().registrarSolicitud("S004","E001","Solicitud","OTRO","MEDIA","2026-11-04","",""), "Tipo inv\u00e1lido"));
         caso("CP-06", "Listar tres registros", () -> {
             String listado = DatosDemo.crearGestor().listar();
-            check(listado.contains("S001") && listado.contains("S002") && listado.contains("S003"), "faltan códigos");
+            check(listado.contains("S001") && listado.contains("S002") && listado.contains("S003"), "faltan c\u00f3digos");
         });
-        caso("CP-07", "Listar vacío", () -> {
+        caso("CP-07", "Listar vac\u00edo", () -> {
             GestorSolicitudes g = new GestorSolicitudes(List.of(), List.of());
-            check(g.listar().contains("Sin solicitudes"), "no informa vacío");
+            check(g.listar().contains("Sin solicitudes"), "no informa vac\u00edo");
         });
         caso("CP-08", "Consultar existente", () -> eq("E001", DatosDemo.crearGestor().consultar("s001").getEstudiante().getLegajo()));
         caso("CP-09", "Consultar inexistente", () -> error(() -> DatosDemo.crearGestor().consultar("S999"), "Solicitud inexistente"));
-        caso("CP-10", "Consultar código vacío", () -> error(() -> DatosDemo.crearGestor().consultar(" "), "Código obligatorio"));
+        caso("CP-10", "Consultar c\u00f3digo vac\u00edo", () -> error(() -> DatosDemo.crearGestor().consultar(" "), "C\u00f3digo obligatorio"));
         caso("CP-11", "Cambiar estado", () -> eq(Estado.RESUELTA, DatosDemo.crearGestor().cambiarEstado("S001","resuelta").getEstado()));
-        caso("CP-12", "Rechazar estado inválido", () -> error(() -> DatosDemo.crearGestor().cambiarEstado("S001","PAUSADA"), "Estado inválido"));
+        caso("CP-12", "Rechazar estado inv\u00e1lido", () -> error(() -> DatosDemo.crearGestor().cambiarEstado("S001","PAUSADA"), "Estado inv\u00e1lido"));
         caso("CP-13", "No mutar estado ante error", () -> {
             GestorSolicitudes g = DatosDemo.crearGestor();
-            error(() -> g.cambiarEstado("S001","PAUSADA"), "Estado inválido");
+            error(() -> g.cambiarEstado("S001","PAUSADA"), "Estado inv\u00e1lido");
             eq(Estado.PENDIENTE, g.consultar("S001").getEstado());
         });
         caso("CP-14", "Asignar responsable", () -> eq("R02", DatosDemo.crearGestor().asignarResponsable("S002","r02").getResponsable().getId()));
         caso("CP-15", "Responsable inexistente", () -> error(() -> DatosDemo.crearGestor().asignarResponsable("S001","R99"), "Responsable inexistente"));
-        caso("CP-16", "Asignación no muta al fallar", () -> {
+        caso("CP-16", "Asignaci\u00f3n no muta al fallar", () -> {
             GestorSolicitudes g = DatosDemo.crearGestor();
             error(() -> g.asignarResponsable("S001","R99"), "Responsable inexistente");
             eq("R01", g.consultar("S001").getResponsable().getId());
         });
         caso("CP-17", "Filtrar prioridad ALTA", () -> eq(1, DatosDemo.crearGestor().filtrar("","ALTA","").size()));
-        caso("CP-18", "Filtrar combinación de 3 criterios", () -> eq(1, DatosDemo.crearGestor().filtrar("CERTIFICADO","MEDIA","PENDIENTE").size()));
+        caso("CP-18", "Filtrar combinaci\u00f3n de 3 criterios", () -> eq(1, DatosDemo.crearGestor().filtrar("CERTIFICADO","MEDIA","PENDIENTE").size()));
         caso("CP-19", "Filtro sin coincidencias", () -> eq(0, DatosDemo.crearGestor().filtrar("EQUIVALENCIA","BAJA","").size()));
-        caso("CP-20", "Filtro inválido", () -> error(() -> DatosDemo.crearGestor().filtrar("OTRO","", ""), "Tipo inválido"));
+        caso("CP-20", "Filtro inv\u00e1lido", () -> error(() -> DatosDemo.crearGestor().filtrar("OTRO","", ""), "Tipo inv\u00e1lido"));
         caso("CP-21", "Reporte inicial consistente", () -> {
             String r = DatosDemo.crearGestor().reporte();
-            check(r.contains("Total: 3") && r.contains("Pendientes: 3") && r.contains("Prioridad alta: 1"), "conteos erróneos");
+            check(r.contains("Total: 3") && r.contains("Pendientes: 3") && r.contains("Prioridad alta: 1"), "conteos err\u00f3neos");
         });
         caso("CP-22", "Reporte luego de cambio estado", () -> {
             GestorSolicitudes g = DatosDemo.crearGestor();
             g.cambiarEstado("S001", "RESUELTA");
-            check(g.reporte().contains("Pendientes: 2") && g.reporte().contains("Resueltas: 1"), "conteos erróneos");
+            check(g.reporte().contains("Pendientes: 2") && g.reporte().contains("Resueltas: 1"), "conteos err\u00f3neos");
         });
         caso("CP-23", "Reporte sin solicitudes", () -> check(new GestorSolicitudes(List.of(),List.of()).reporte().contains("Total: 0"), "sin cero"));
-        caso("CP-24", "Proteger registro de responsable inválido", () -> {
+        caso("CP-24", "Proteger registro de responsable inv\u00e1lido", () -> {
             GestorSolicitudes g = DatosDemo.crearGestor();
             error(() -> g.registrarSolicitud("S004","E001","Solicitud","CERTIFICADO","MEDIA","2026-11-04","NO",""), "Responsable inexistente");
             eq(3, g.getSolicitudes().size());
@@ -75,7 +74,7 @@ public class PruebasBase {
     private static void error(Runnable r, String texto) {
         try { r.run(); } catch (IllegalArgumentException ex) {
             if (ex.getMessage() != null && ex.getMessage().contains(texto)) return;
-            throw new AssertionError("excepción no coincide: " + ex.getMessage());
+            throw new AssertionError("excepci\u00f3n no coincide: " + ex.getMessage());
         }
         throw new AssertionError("se esperaba error: " + texto);
     }

@@ -1,4 +1,3 @@
-/** Persona ficticia a quien se asigna una solicitud. */
 public class Responsable {
     private final String id;
     private final String nombre;

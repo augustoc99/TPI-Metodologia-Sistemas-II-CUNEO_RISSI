@@ -1,4 +1,3 @@
-/** Estudiante ficticio que presenta solicitudes académicas. */
 public class Estudiante {
     private final String legajo;
     private final String nombre;

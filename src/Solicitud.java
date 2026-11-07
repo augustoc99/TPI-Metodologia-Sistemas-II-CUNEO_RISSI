@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 
-/** Entidad de solicitud. Reglas y presentación se concentran aún en el gestor (versión inicial). */
 public class Solicitud {
     private final String codigo;
     private final Estudiante estudiante;
