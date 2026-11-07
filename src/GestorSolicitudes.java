@@ -194,21 +194,4 @@ public class GestorSolicitudes {
     public List<Solicitud> getSolicitudes() {
         return Collections.unmodifiableList(solicitudes);
     }
-
-    public String reporte() {
-        int pendientes = 0, enProceso = 0, resueltas = 0, altas = 0;
-        for (Solicitud s : solicitudes) {
-            String estado = s.getEstado().name();
-            if (estado.equals("PENDIENTE")) pendientes++;
-            else if (estado.equals("EN_PROCESO")) enProceso++;
-            else if (estado.equals("RESUELTA")) resueltas++;
-            if (s.getPrioridad().name().equals("ALTA")) altas++;
-        }
-        return "REPORTE DE SOLICITUDES\n"
-                + "Total: " + solicitudes.size() + "\n"
-                + "Pendientes: " + pendientes + "\n"
-                + "En proceso: " + enProceso + "\n"
-                + "Resueltas: " + resueltas + "\n"
-                + "Prioridad alta: " + altas + "\n";
-    }
 }

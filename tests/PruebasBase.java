@@ -44,15 +44,15 @@ public class PruebasBase {
         caso("CP-19", "Filtro sin coincidencias", () -> eq(0, DatosDemo.crearGestor().filtrar("EQUIVALENCIA","BAJA","").size()));
         caso("CP-20", "Filtro inv\u00e1lido", () -> error(() -> DatosDemo.crearGestor().filtrar("OTRO","", ""), "Tipo inv\u00e1lido"));
         caso("CP-21", "Reporte inicial consistente", () -> {
-            String r = DatosDemo.crearGestor().reporte();
+            String r = reporte(DatosDemo.crearGestor());
             check(r.contains("Total: 3") && r.contains("Pendientes: 3") && r.contains("Prioridad alta: 1"), "conteos err\u00f3neos");
         });
         caso("CP-22", "Reporte luego de cambio estado", () -> {
             GestorSolicitudes g = DatosDemo.crearGestor();
             g.cambiarEstado("S001", "RESUELTA");
-            check(g.reporte().contains("Pendientes: 2") && g.reporte().contains("Resueltas: 1"), "conteos err\u00f3neos");
+            check(reporte(g).contains("Pendientes: 2") && reporte(g).contains("Resueltas: 1"), "conteos err\u00f3neos");
         });
-        caso("CP-23", "Reporte sin solicitudes", () -> check(new GestorSolicitudes(List.of(),List.of()).reporte().contains("Total: 0"), "sin cero"));
+        caso("CP-23", "Reporte sin solicitudes", () -> check(reporte(new GestorSolicitudes(List.of(),List.of())).contains("Total: 0"), "sin cero"));
         caso("CP-24", "Proteger registro de responsable inv\u00e1lido", () -> {
             GestorSolicitudes g = DatosDemo.crearGestor();
             error(() -> g.registrarSolicitud(altaValida("S004").responsableId("NO").construir()), "Responsable inexistente");
@@ -64,6 +64,14 @@ public class PruebasBase {
             rechazaMutacion(() -> g.getSolicitudes().add(g.consultar("S001")));
             eq(3, g.getSolicitudes().size());
         });
+        caso("CP-26", "Reporte con estados y prioridades mezclados", () -> {
+            GestorSolicitudes g = DatosDemo.crearGestor();
+            g.cambiarEstado("S001", "RESUELTA");
+            g.cambiarEstado("S002", "EN_PROCESO");
+            String r = reporte(g);
+            check(r.contains("Total: 3") && r.contains("Pendientes: 1") && r.contains("En proceso: 1")
+                    && r.contains("Resueltas: 1") && r.contains("Prioridad alta: 1"), "conteos err\u00f3neos: " + r);
+        });
         System.out.printf("TOTAL: %d aprobadas, %d fallidas%n", aprobadas, fallidas);
         if (fallidas != 0) System.exit(1);
     }
@@ -71,6 +79,9 @@ public class PruebasBase {
         return DatosRegistroSolicitud.conCodigo(codigo).legajo("E001").descripcion("Solicitud")
                 .tipo("CERTIFICADO").prioridad("MEDIA").fecha("2026-11-04")
                 .responsableId("").observacion("");
+    }
+    private static String reporte(GestorSolicitudes gestor) {
+        return new ReporteSolicitudes().generar(gestor.getSolicitudes());
     }
     private static void caso(String id, String nombre, Runnable accion) {
         try { accion.run(); aprobadas++; System.out.println("[OK] " + id + " " + nombre); }

@@ -4,8 +4,9 @@ public class Main {
     public static void main(String[] args) {
         GestorSolicitudes gestor = DatosDemo.crearGestor();
         PresentadorSolicitudes presentador = new PresentadorSolicitudes();
+        ReporteSolicitudes reporte = new ReporteSolicitudes();
         if (args.length > 0 && args[0].equals("demo")) {
-            ejecutarDemo(gestor);
+            ejecutarDemo(gestor, reporte);
             return;
         }
         try (Scanner scanner = new Scanner(System.in)) {
@@ -36,7 +37,7 @@ public class Main {
                         case "4" -> System.out.println("Estado actualizado: " + gestor.cambiarEstado(pedir(scanner,"C\u00f3digo"),pedir(scanner,"Nuevo estado")).getEstado());
                         case "5" -> System.out.println("Responsable asignado: " + gestor.asignarResponsable(pedir(scanner,"C\u00f3digo"),pedir(scanner,"Responsable R01/R02")).getResponsable().getNombre());
                         case "6" -> System.out.println("Coincidencias: " + gestor.filtrar(pedir(scanner,"Tipo (opcional)"),pedir(scanner,"Prioridad (opcional)"),pedir(scanner,"Estado (opcional)")).size());
-                        case "7" -> System.out.print(gestor.reporte());
+                        case "7" -> System.out.print(reporte.generar(gestor.getSolicitudes()));
                         case "0" -> { System.out.println("Hasta luego"); return; }
                         default -> System.out.println("Opci\u00f3n inv\u00e1lida");
                     }
@@ -50,7 +51,7 @@ public class Main {
         System.out.print(etiqueta + ": ");
         return s.nextLine();
     }
-    private static void ejecutarDemo(GestorSolicitudes gestor) {
+    private static void ejecutarDemo(GestorSolicitudes gestor, ReporteSolicitudes reporte) {
         System.out.println("=== DEMO DETERMINISTA / VERSI\u00d3N INICIAL ===");
         System.out.println("Registrar S004: " + gestor.registrarSolicitud(DatosRegistroSolicitud.conCodigo("S004").legajo("E002")
                 .descripcion("Copia programa").tipo("CERTIFICADO").prioridad("ALTA")
@@ -59,7 +60,7 @@ public class Main {
         System.out.println("Asignar S004: " + gestor.asignarResponsable("S004","R01").getResponsable().getId());
         System.out.println("Cambiar estado S004: " + gestor.cambiarEstado("S004","EN_PROCESO").getEstado());
         System.out.println("Filtro prioridad ALTA: " + gestor.filtrar("","ALTA","").size());
-        System.out.print(gestor.reporte());
+        System.out.print(reporte.generar(gestor.getSolicitudes()));
         System.out.println("Listar: " + gestor.getSolicitudes().size() + " registros");
         System.out.println("=== FIN DEMO ===");
     }
